@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Buscar Letras de Arcángel</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #111; color: #eee; }
+    input { padding: 8px; width: 300px; font-size: 16px; }
+    button { padding: 8px 16px; font-size: 16px; cursor: pointer; }
+    pre { white-space: pre-wrap; margin-top: 20px; background: #222; padding: 10px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <h1>Buscar canciones de Arcángel</h1>
+  <input type="text" id="query" placeholder="Escribe el nombre de la canción">
+  <button onclick="buscar()">Buscar</button>
+  
+  <pre id="resultado"></pre>
+
+  <script>
+    function buscar() {
+      const q = document.getElementById('query').value;
+      const resultado = document.getElementById('resultado');
+      resultado.textContent = 'Buscando...';
+
+      fetch(`/buscar?q=${encodeURIComponent(q)}`)
+        .then(res => res.json())
+        .then(data => {
+          resultado.textContent = '';
+          for (let titulo in data) {
+            resultado.textContent += ` ${titulo} \n\n${data[titulo]}\n\n`;
+          }
+        })
+        .catch(err => {
+          resultado.textContent = " Canción no encontrada.";
+        });
+    }
+  </script>
+</body>
+</html>
